@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/msnowshadali/npm-publish-mono-repo/compare/v1.0.0...v1.1.0) (2025-08-19)
+
+
+### Features
+
+* add number utilities and tests for formatting functions ([210d953](https://github.com/msnowshadali/npm-publish-mono-repo/commit/210d953a8cf71e6fa11358577da533ed91bc501a))
+
 # 1.0.0 (2025-08-19)
 
 

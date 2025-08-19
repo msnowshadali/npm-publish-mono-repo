@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/msnowshadali/npm-publish-mono-repo/compare/v1.1.0...v1.2.0) (2025-08-19)
+
+
+### Features
+
+* add string counting utilities and example usage ([#4](https://github.com/msnowshadali/npm-publish-mono-repo/issues/4)) ([71d2a38](https://github.com/msnowshadali/npm-publish-mono-repo/commit/71d2a38ad6c0fe1a463a316af789d24adb37ee22))
+
 # [1.1.0](https://github.com/msnowshadali/npm-publish-mono-repo/compare/v1.0.0...v1.1.0) (2025-08-19)
 
 

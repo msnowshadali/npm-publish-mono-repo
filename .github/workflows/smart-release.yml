@@ -1,0 +1,96 @@
+name: Smart Package Release
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  release:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      
+      - name: Build packages
+        run: yarn build
+      
+      - name: Detect package changes
+        id: detect-changes
+        run: |
+          echo "Checking for package changes..."
+          
+          # Get the list of changed files
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+          
+          # Check for UI changes
+          if echo "$CHANGED_FILES" | grep -q "^packages/ui/"; then
+            echo "UI package has changes"
+            echo "ui-changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "UI package has no changes"
+            echo "ui-changed=false" >> $GITHUB_OUTPUT
+          fi
+          
+          # Check for Utils changes
+          if echo "$CHANGED_FILES" | grep -q "^packages/utils/"; then
+            echo "Utils package has changes"
+            echo "utils-changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "Utils package has no changes"
+            echo "utils-changed=false" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "UI changed: ${{ steps.detect-changes.outputs.ui-changed }}"
+          echo "Utils changed: ${{ steps.detect-changes.outputs.utils-changed }}"
+      
+      - name: Release UI Package
+        if: steps.detect-changes.outputs.ui-changed == 'true'
+        env:
+          NODE_ENV: production
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🚀 Releasing UI package..."
+          cd packages/ui
+          yarn release
+          echo "✅ UI package released successfully!"
+      
+      - name: Release Utils Package
+        if: steps.detect-changes.outputs.utils-changed == 'true'
+        env:
+          NODE_ENV: production
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🚀 Releasing Utils package..."
+          cd packages/utils
+          yarn release
+          echo "✅ Utils package released successfully!"
+      
+      - name: No packages to release
+        if: steps.detect-changes.outputs.ui-changed == 'false' && steps.detect-changes.outputs.utils-changed == 'false'
+        run: |
+          echo "ℹ️ No package changes detected. Nothing to release."

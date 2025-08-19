@@ -1,12 +1,26 @@
-name: Release Packages
+name: Manual Release
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'packages/ui/**'
-      - 'packages/utils/**'
-      - '.github/workflows/release.yml'
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package to release'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - ui
+          - utils
+      version:
+        description: 'Release type (patch, minor, major)'
+        required: false
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
 
 jobs:
   release:
@@ -37,8 +51,17 @@ jobs:
       - name: Build packages
         run: yarn build
       
-      - name: Release UI package
-        if: contains(github.event.head_commit.modified, 'packages/ui') || contains(github.event.head_commit.added, 'packages/ui')
+      - name: Release All Packages
+        if: inputs.package == 'all'
+        env:
+          NODE_ENV: production
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          yarn release
+      
+      - name: Release UI Package
+        if: inputs.package == 'ui'
         env:
           NODE_ENV: production
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -47,8 +70,8 @@ jobs:
           cd packages/ui
           yarn release
       
-      - name: Release Utils package
-        if: contains(github.event.head_commit.modified, 'packages/utils') || contains(github.event.head_commit.added, 'packages/utils')
+      - name: Release Utils Package
+        if: inputs.package == 'utils'
         env:
           NODE_ENV: production
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

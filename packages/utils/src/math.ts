@@ -73,3 +73,94 @@ export function gcd(a: number, b: number): number {
 export function lcm(a: number, b: number): number {
   return Math.abs(a * b) / gcd(a, b);
 }
+
+/**
+ * Converts a number to a string with optional formatting options
+ */
+export function numberToString(
+  num: number,
+  options: {
+    base?: number;
+    precision?: number;
+    locale?: string;
+    notation?: 'standard' | 'scientific' | 'engineering' | 'compact';
+    compactDisplay?: 'short' | 'long';
+  } = {}
+): string {
+  const {
+    base = 10,
+    precision,
+    locale = 'en-US',
+    notation = 'standard',
+    compactDisplay = 'short'
+  } = options;
+
+  // Handle special cases
+  if (num === 0) return '0';
+  if (num === Infinity) return 'Infinity';
+  if (num === -Infinity) return '-Infinity';
+  if (isNaN(num)) return 'NaN';
+
+  // Convert to different base if specified
+  if (base !== 10) {
+    return num.toString(base);
+  }
+
+  // Handle precision
+  if (precision !== undefined) {
+    num = round(num, precision);
+  }
+
+  // Format with locale and notation
+  try {
+    const formatter = new Intl.NumberFormat(locale, {
+      notation,
+      compactDisplay,
+      maximumFractionDigits: precision !== undefined ? precision : 20,
+      minimumFractionDigits: precision !== undefined ? precision : 0
+    });
+    return formatter.format(num);
+  } catch (error) {
+    // Fallback to basic toString if formatting fails
+    return num.toString();
+  }
+}
+
+/**
+ * Converts a number to a currency string
+ */
+export function numberToCurrency(
+  num: number,
+  currency: string = 'USD',
+  locale: string = 'en-US'
+): string {
+  try {
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency
+    }).format(num);
+  } catch (error) {
+    // Fallback to basic formatting
+    return `${currency} ${num.toFixed(2)}`;
+  }
+}
+
+/**
+ * Converts a number to a percentage string
+ */
+export function numberToPercentage(
+  num: number,
+  precision: number = 2,
+  locale: string = 'en-US'
+): string {
+  try {
+    return new Intl.NumberFormat(locale, {
+      style: 'percent',
+      minimumFractionDigits: precision,
+      maximumFractionDigits: precision
+    }).format(num / 100);
+  } catch (error) {
+    // Fallback to basic formatting
+    return `${num.toFixed(precision)}%`;
+  }
+}

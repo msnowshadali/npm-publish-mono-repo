@@ -1,140 +1,97 @@
 # NPM Publish Monorepo
 
-This is a sample monorepo demonstrating how to publish multiple TypeScript packages to npm using semantic-release.
+This is a monorepo containing two separate npm packages:
+- `@ms.nowshadali/ui` - UI component library
+- `@ms.nowshadali/utils` - Utility functions library
 
 ## Structure
 
 ```
 npm-publish-mono-repo/
 ├── packages/
-│   ├── ui/          # UI component library
-│   └── utils/       # Utility functions library
-├── package.json      # Root workspace configuration
-└── README.md
+│   ├── ui/          # @ms.nowshadali/ui package
+│   └── utils/       # @ms.nowshadali/utils package
+├── package.json     # Root workspace configuration
+├── yarn.lock        # Yarn lock file
+└── .github/         # GitHub Actions workflows
 ```
 
-## Packages
+## Publishing Packages
 
-### @your-org/ui
-A sample UI component library with:
-- Button component
-- Card component  
-- Input component
-- TypeScript interfaces
-- CSS class-based styling
+### Option 1: GitHub Actions (Recommended)
+The repository uses GitHub Actions to automatically detect and release packages:
 
-### @your-org/utils
-A collection of utility functions including:
-- String utilities (capitalize, toCamelCase, etc.)
-- Array utilities (unique, shuffle, groupBy, etc.)
-- Object utilities (deepClone, pick, omit, etc.)
-- Date utilities (formatDate, getRelativeTime, etc.)
-- Math utilities (clamp, random, factorial, etc.)
+- **Push to main**: Automatically releases packages with changes
+- **PR merge**: Releases packages after code review
+- **Smart detection**: Only releases packages that actually changed
 
-## Setup
+### Option 2: Manual Release
+```bash
+# Publish UI package only
+yarn release:ui
 
-1. **Install dependencies:**
+# Publish Utils package only  
+yarn release:utils
+
+# Publish all packages with changes
+yarn release
+```
+
+## Development Workflow
+
+1. **Make changes** in either `packages/ui` or `packages/utils`
+2. **Commit changes** with conventional commit messages:
    ```bash
-   npm install
+   git commit -m "feat(ui): add new button component"
+   git commit -m "fix(utils): fix string counting function"
    ```
-
-2. **Build all packages:**
-   ```bash
-   npm run build
-   ```
-
-3. **Type checking:**
-   ```bash
-   npm run type-check
-   ```
-
-## Publishing
-
-### Prerequisites
-- Set up npm authentication: `npm login`
-- Configure semantic-release for your npm registry
-- Update package names in `packages/*/package.json` to match your npm scope
-
-### Release Process
-
-1. **Make changes and commit with conventional commit messages:**
-   ```bash
-   git add .
-   git commit -m "feat: add new utility function"
-   git push origin main
-   ```
-
-2. **Release individual packages:**
-   ```bash
-   cd packages/ui
-   npm run release
-   
-   cd ../utils
-   npm run release
-   ```
-
-3. **Or release all packages from root:**
-   ```bash
-   npm run release
-   ```
+3. **Push and create PR** - GitHub Actions will handle the rest!
 
 ## Conventional Commits
 
-Use these commit message prefixes for automatic versioning:
+Use these commit types for automatic versioning:
 - `feat:` - New features (minor version bump)
 - `fix:` - Bug fixes (patch version bump)
 - `BREAKING CHANGE:` - Breaking changes (major version bump)
-- `docs:` - Documentation changes
-- `style:` - Code style changes
-- `refactor:` - Code refactoring
-- `test:` - Test additions/changes
-- `chore:` - Maintenance tasks
+- `docs:`, `style:`, `refactor:`, `test:`, `chore:` - No version bump
 
-## Configuration
+## Package Configuration
 
-### Semantic Release
-Each package has its own `.releaserc.json` configuration for:
-- Commit analysis
-- Release notes generation
-- Changelog creation
-- NPM publishing
-- Git tagging
-- GitHub releases
+Each package has its own:
+- `package.json` with unique name and version
+- `semantic-release` configuration
+- Build and test scripts
+- Independent versioning
 
-### TypeScript
-Each package has its own `tsconfig.json` optimized for:
-- CommonJS module output
-- Declaration file generation
-- Strict type checking
-- ES2020 target
+## Benefits of This Approach
 
-## Scripts
+✅ **Separate packages** - Users can install only what they need  
+✅ **Independent versioning** - Each package can have different release cycles  
+✅ **Shared tooling** - Common build, test, and lint configurations  
+✅ **Efficient development** - Work on multiple packages in one repository  
+✅ **Smart releases** - GitHub Actions automatically detects and releases changed packages  
+✅ **Simple setup** - No complex tooling, just yarn workspaces + semantic-release  
 
-### Root Level
-- `npm run build` - Build all packages
-- `npm run test` - Test all packages
-- `npm run clean` - Clean all packages
-- `npm run lint` - Lint all packages
-- `npm run type-check` - Type check all packages
-- `npm run release` - Release all packages
+## Example Usage
 
-### Package Level
-- `npm run build` - Build the package
-- `npm run clean` - Clean build artifacts
-- `npm run type-check` - Type check the package
-- `npm run release` - Release the package
+```bash
+# Install only UI components
+yarn add @ms.nowshadali/ui
 
-## Customization
+# Install only utilities
+yarn add @ms.nowshadali/utils
 
-1. **Update package names** in `packages/*/package.json`
-2. **Modify semantic-release config** in `.releaserc.json` files
-3. **Add your own components/functions** to the respective packages
-4. **Configure CI/CD** for automated releases
+# Install both
+yarn add @ms.nowshadali/ui @ms.nowshadali/utils
+```
 
-## Notes
+## GitHub Actions
 
-- Packages use `0.0.0-development` as the initial version
-- Semantic-release will automatically version based on commit messages
-- Each package can be released independently
-- Build artifacts are generated in `dist/` directories
-- TypeScript declaration files are automatically generated
+The repository includes several workflows:
+- **Smart Package Release** - Automatically releases packages based on changes
+- **Manual Release** - Trigger releases manually when needed
+- **Automatic Release** - Release on push to main
+
+All workflows use Yarn for package management and are optimized for the yarn.lock file.
+
+This setup ensures that both packages are published separately and can be used independently by consumers, with GitHub Actions handling the complexity of detecting and releasing only the packages that have changes.

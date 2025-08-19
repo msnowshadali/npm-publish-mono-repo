@@ -5,7 +5,6 @@ export function deepClone<T>(obj: T): T {
   if (obj === null || typeof obj !== 'object') {
     return obj;
   }
-  console.info('testing')
   
   if (obj instanceof Date) {
     return new Date(obj.getTime()) as unknown as T;
@@ -29,7 +28,7 @@ export function deepClone<T>(obj: T): T {
 }
 
 /**
- * Picks specified keys from an object
+ * Picks specified keys from an object new changes
  */
 export function pick<T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
   const result = {} as Pick<T, K>;

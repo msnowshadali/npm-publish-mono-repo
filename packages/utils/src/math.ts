@@ -164,3 +164,10 @@ export function numberToPercentage(
     return `${num.toFixed(precision)}%`;
   }
 }
+
+/**
+ * Formats a number with specified decimal places
+ */
+export function formatNumber(num: number, decimals: number = 2): string {
+  return num.toFixed(decimals);
+}

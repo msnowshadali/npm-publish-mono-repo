@@ -11,7 +11,8 @@ import {
   lcm,
   numberToString,
   numberToCurrency,
-  numberToPercentage
+  numberToPercentage,
+  formatNumber
 } from './math';
 
 describe('Math Utils', () => {
@@ -156,6 +157,20 @@ describe('Math Utils', () => {
 
     it('should handle different locales', () => {
       expect(numberToPercentage(25, 2, 'de-DE')).toBe('25,00 %');
+    });
+  });
+
+  describe('formatNumber', () => {
+    it('should format number with default 2 decimals', () => {
+      expect(formatNumber(3.14159)).toBe('3.14');
+    });
+
+    it('should format number with custom decimals', () => {
+      expect(formatNumber(3.14159, 4)).toBe('3.1416');
+    });
+
+    it('should handle whole numbers', () => {
+      expect(formatNumber(42)).toBe('42.00');
     });
   });
 });

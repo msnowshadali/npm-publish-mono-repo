@@ -7,4 +7,4 @@ export * from './date';
 export * from './math';
 
 // Version info - Updated for new release
-export const VERSION = '1.0.1';
+export const VERSION = '1.1.0';

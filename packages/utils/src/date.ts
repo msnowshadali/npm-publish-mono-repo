@@ -67,3 +67,10 @@ export function getStartOfWeek(date: Date): Date {
   result.setDate(diff);
   return result;
 }
+
+/**
+ * Returns an array of weekday names
+ */
+export function getWeekdays(): string[] {
+  return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+}

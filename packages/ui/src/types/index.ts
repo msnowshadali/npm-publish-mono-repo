@@ -5,7 +5,7 @@ export interface BaseComponentProps {
 }
 
 export interface ButtonProps extends BaseComponentProps {
-  children: React.ReactNode;
+  children: string;
   variant?: 'primary' | 'secondary' | 'outline';
   size?: 'sm' | 'md' | 'lg';
   disabled?: boolean;
@@ -13,7 +13,7 @@ export interface ButtonProps extends BaseComponentProps {
 }
 
 export interface CardProps extends BaseComponentProps {
-  children: React.ReactNode;
+  children: string;
   title?: string;
   subtitle?: string;
   padding?: 'sm' | 'md' | 'lg';

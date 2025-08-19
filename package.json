@@ -1,0 +1,28 @@
+{
+  "name": "npm-publish-mono-repo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "clean": "npm run clean --workspaces",
+    "lint": "npm run lint --workspaces",
+    "type-check": "npm run type-check --workspaces",
+    "release": "npm run release --workspaces --if-present"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^9.2.6",
+    "@semantic-release/npm": "^10.0.6",
+    "semantic-release": "^21.1.2",
+    "typescript": "^5.2.2",
+    "rimraf": "^5.0.5"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "Monorepo with UI and Utils packages for npm publishing"
+}

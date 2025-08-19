@@ -1,5 +1,5 @@
 {
-  "name": "@ms.nowshadali/npm-publish-mono-repo/utils",
+  "name": "@ms.nowshadali/utils",
   "version": "1.0.0",
   "description": "A collection of utility functions",
   "main": "dist/index.js",

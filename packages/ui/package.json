@@ -1,5 +1,5 @@
 {
-  "name": "@ms.nowshadali/npm-publish-mono-repo/ui",
+  "name": "@ms.nowshadali/ui",
   "version": "1.0.0",
   "description": "A sample UI component library",
   "main": "dist/index.js",

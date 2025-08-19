@@ -5,6 +5,7 @@ export function deepClone<T>(obj: T): T {
   if (obj === null || typeof obj !== 'object') {
     return obj;
   }
+  console.info('testing')
   
   if (obj instanceof Date) {
     return new Date(obj.getTime()) as unknown as T;

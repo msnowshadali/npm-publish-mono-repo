@@ -6,5 +6,5 @@ export * from './object';
 export * from './date';
 export * from './math';
 
-// Version info - Updated for new release
+// Version info - Ready for semantic-release
 export const VERSION = '1.1.0';

@@ -1,5 +1,6 @@
 // Utils Package - Sample Utility Functions
 export * from './string';
+export * from './string-count';
 export * from './array';
 export * from './object';
 export * from './date';

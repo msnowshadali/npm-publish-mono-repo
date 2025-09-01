@@ -13,6 +13,7 @@ export class Card {
     const baseClasses = 'card';
     const paddingClasses = {
       sm: 'card-padding-sm',
+      sx: 'card-padding-sx',
       md: 'card-padding-md',
       lg: 'card-padding-lg'
     };
